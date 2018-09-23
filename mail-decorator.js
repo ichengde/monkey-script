@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mail Decorator
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.0.1
 // @description  精简QQ邮箱界面
 // @author       Chegde
 // @match        *://mail.qq.com/*
@@ -57,11 +57,11 @@
         info.style.marginLeft = '20px';
     }
 
+    // 删除文字
     var commerce = document.querySelectorAll('span');
-    for (var i = 0; i < commerce.length; i = i + 1) {
-        if (commerce[i].innerText.indexOf('Tencent') >= 0) {
-            commerce[i].innerText = commerce[i].innerText.replace('Tencent', '');
-            // remove(commerce[i]);
+    for (var commerceIndex = 0; commerceIndex < commerce.length; commerceIndex = commerceIndex + 1) {
+        if (commerce[commerceIndex].innerText.indexOf('Tencent') >= 0) {
+            commerce[commerceIndex].innerText = commerce[commerceIndex].innerText.replace('Tencent', '');
         }
     }
 })();

@@ -8,13 +8,20 @@
 // @grant        none
 // ==/UserScript==
 
-(function () {
+(function() {
     'use strict';
-    if (location.pathname.indexOf('frame_html') >= 0) {
-    }
-    window.addEventListener('load', function () { });
+    if (location.pathname.indexOf('frame_html') >= 0) {}
+    window.addEventListener('load', function() {});
 
-    var remove = function (dom) {
+    var getQueryParameter = function(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+
+    var remove = function(dom) {
         if (dom instanceof HTMLElement) {
             dom.remove();
             return;
@@ -56,6 +63,13 @@
     if (info) {
         info.style.marginLeft = '20px';
     }
+
+    // 自助查询 重新写入
+    var TodayInBox = document.querySelector('#TodayInBox');
+    var staticQuery = document.createElement("li");
+    var queryUrl = "./help_static_login?sid=" + getQueryParameter('sid');
+    staticQuery.innerHTML = '<a href="' + queryUrl + '">自助查询</a>';
+    TodayInBox.appendChild(staticQuery);
 
     // 删除文字
     var commerce = document.querySelectorAll('span');

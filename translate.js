@@ -12,7 +12,7 @@
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 // fork from https://greasyfork.org/zh-CN/scripts/35251-%E6%99%BA%E8%83%BD%E5%88%92%E8%AF%8D%E7%BF%BB%E8%AF%91
-/* 
+/*
     to do:
     1. 快捷键翻译
     2. 不存在英文单词则不出现翻译按钮
@@ -80,8 +80,8 @@
             server.containerDestroy();// 销毁翻译内容面板
         }
     });
-    // 翻译图标点击事件
-    icon.addEventListener('click', function (e) {
+
+    var trs = function (e) {
         var text = window.getSelection().toString().trim();
         if (text) {
             icon.style.display = 'none';
@@ -106,7 +106,18 @@
                 }
             }
         }
-    });
+    };
+
+    // 翻译图标点击事件
+    icon.addEventListener('click', trs);
+
+    // 快捷键考虑
+    window.onkeyup = function (event) {
+        let key = event.key.toUpperCase();
+        if (key == 'T') {
+            // trs(event);
+        }
+    }
 
     function countOfWord(str) {
         var value = String(str);
@@ -116,7 +127,7 @@
         value = value.replace(/\s+/gi, " ");// 多个空格替换成一个空格
 
         var length = 0; // 更新计数
-        var match = value.match(/\s/g);//没有匹配到则返回null 
+        var match = value.match(/\s/g);//没有匹配到则返回null
         if (match) {
             length = match.length + 1;
         } else if (value) {

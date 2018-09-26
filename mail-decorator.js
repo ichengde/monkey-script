@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Mail Decorator
-// @namespace    http://tampermonkey.net/
+// @name         精简QQ邮箱界面 Mail Decorator
+// @namespace    https://greasyfork.org/zh-CN/users/372485
 // @version      0.0.1
 // @description  精简QQ邮箱界面
 // @author       Chegde
@@ -8,12 +8,12 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
-    if (location.pathname.indexOf('frame_html') >= 0) {}
-    window.addEventListener('load', function() {});
+    if (location.pathname.indexOf('frame_html') >= 0) { }
+    window.addEventListener('load', function () { });
 
-    var getQueryParameter = function(name) {
+    var getQueryParameter = function (name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(location.search);
@@ -21,7 +21,7 @@
     };
 
 
-    var remove = function(dom) {
+    var remove = function (dom) {
         if (dom instanceof HTMLElement) {
             dom.remove();
             return;

@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         划词翻译 translate
 // @namespace    https://greasyfork.org/zh-CN/users/372485
-// @version      0.0.1
+// @version      0.0.2
 // @description  划词翻译
-// @author       chegde
+// @author       Chegde
 // @match        http://*/*
 // @include      https://*/*
 // @run-at document-end
@@ -13,9 +13,12 @@
 // ==/UserScript==
 // fork from https://greasyfork.org/zh-CN/scripts/35251-%E6%99%BA%E8%83%BD%E5%88%92%E8%AF%8D%E7%BF%BB%E8%AF%91
 /*
+    changelog:
+    2018-9-28 不存在英文单词则不出现翻译按钮
+
     to do:
-    1. 快捷键翻译
-    2. 不存在英文单词则不出现翻译按钮
+    1. 快捷键控制 翻译 - 翻译文本居中 关闭
+    2. 中文翻译成英文 由快捷键进行开关
 */
 (function () {
     'use strict';
@@ -32,7 +35,7 @@
         'margin:4px!important;' +
         '';
     icon.innerHTML = '' +
-        '翻译' +
+        'translate' +
         '';
     icon.setAttribute('style', '' +
         'display:none!important;' +
@@ -71,7 +74,7 @@
         }
 
         var text = window.getSelection().toString().trim();
-        if (text && icon.style.display == 'none') {
+        if (text && isChina(text) === false && icon.style.display == 'none') {
             icon.style.top = e.pageY + 12 + 'px';
             icon.style.left = e.pageX + 'px';
             icon.style.display = 'block';
@@ -81,7 +84,7 @@
         }
     });
 
-    var trs = function (e) {
+    var translateProgress = function (e) {
         var text = window.getSelection().toString().trim();
         if (text) {
             icon.style.display = 'none';
@@ -109,13 +112,12 @@
     };
 
     // 翻译图标点击事件
-    icon.addEventListener('click', trs);
+    icon.addEventListener('click', translateProgress);
 
-    // 快捷键考虑
     window.onkeyup = function (event) {
         let key = event.key.toUpperCase();
         if (key == 'T') {
-            // trs(event);
+            translateProgress(event);
         }
     }
 

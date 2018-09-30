@@ -35,10 +35,9 @@
         'height:20px;' +
         'margin:4px!important;' +
         '';
-    icon.innerHTML = '' +
-        'translate' +
-        '';
-    icon.setAttribute('style', '' +
+    icon.innerHTML = '译';
+
+        icon.setAttribute('style', '' +
         'display:none!important;' +
         'background:#fff!important;' +
         'position:absolute!important;' +

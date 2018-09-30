@@ -15,6 +15,7 @@
 /*
     changelog:
     2018-9-28 不存在英文单词则不出现翻译按钮
+    2018-9-29 过滤标点符号 只匹配字母
 
     to do:
     1. 快捷键控制 翻译 - 翻译文本居中 关闭
@@ -139,8 +140,9 @@
     }
 
     function isChina(str) {
-        var reg = /^([\u4E00-\u9FA5]|[\uFF00-\uFF20]|[\u3000-\u301C])+$/;
-        return !!reg.test(str);
+        // [\u4E00-\u9FA5]|[\uFF00-\uFF20]|[\u3000-\u301C]
+        var reg = /^([a-zA-Z])+$/;
+        return !reg.test(str);
     }
     // ajax 跨域访问公共方法
     function ajax(url, text, target, element, method, data, headers) {

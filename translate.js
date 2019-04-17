@@ -16,9 +16,9 @@
     changelog:
     2018-9-28 不存在英文单词则不出现翻译按钮
     2018-9-29 过滤标点符号 只匹配字母
+    2019-4-17 快捷键控制 翻译 - 翻译文本左上角 按键为alt+c
 
     to do:
-    1. 快捷键控制 翻译 - 翻译文本居中 关闭
     2. 中文翻译成英文 由快捷键进行开关
 */
 (function () {
@@ -91,9 +91,11 @@
             server.containerDestroy();// 销毁翻译内容面板
             // 新建翻译内容面板
             var container = server.container();
-            container.style.top = e.pageY + 'px';
-            if (e.pageX + 350 <= document.body.clientWidth)// container 面板css最大宽度为250px
-                container.style.left = e.pageX + 'px';
+            let top = 0;//e.pageY ||
+            let left = 0;//e.pageX ||
+            container.style.top =  top + 'px';
+            if (left + 350 <= document.body.clientWidth)// container 面板css最大宽度为250px
+                container.style.left = left + 'px';
             else
                 container.style.left = document.body.clientWidth - 350 + 'px';
             document.body.appendChild(container);
@@ -114,12 +116,14 @@
     // 翻译图标点击事件
     icon.addEventListener('click', translateProgress);
 
-    window.onkeyup = function (event) {
+    window.addEventListener("keyup" ,function (event) {
         let key = event.key.toUpperCase();
-        if (key == 'T') {
+        if (event.altKey === true && key == 'C') {
+            console.log('keyup');
+
             translateProgress(event);
         }
-    }
+    })
 
     function countOfWord(str) {
         var value = String(str);
@@ -234,7 +238,7 @@
             var div = document.createElement('div');
             div.setAttribute('style', '' +
                 'display:none!important;' +
-                'position:absolute!important;' +
+                'position:fixed!important;' +
                 'font-size:13px!important;' +
                 'overflow:auto!important;' +
                 'background:#fff!important;' +

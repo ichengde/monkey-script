@@ -17,12 +17,9 @@
     2018-9-28 不存在英文单词则不出现翻译按钮
     2018-9-29 过滤标点符号 只匹配字母
     2019-4-17 快捷键控制 翻译 - 翻译文本左上角 按键为alt+c
-    2019-4-24 快捷键控制 出现输入框 回车进行查询 出现按键为alt+w
 
     to do:
-    * 重构计划
-    * 将查询过的单词进行记录
-    * 中文翻译成英文 由快捷键进行开关
+    2. 中文翻译成英文 由快捷键进行开关
 */
 (function () {
     'use strict';
@@ -133,14 +130,14 @@
         input.style.top = top + 'px';
         input.style.left = left + 'px';
         input.style.position = 'fixed';
-        input.style.zIndex = '525';
+        input.style.zIndex = '2147483647';
 
         // 新建翻译内容面板
         var container = server.container();
         container.style.top = top + 'px';
         container.style.left = left + 'px';
         container.style.position = 'fixed';
-        container.style.zIndex = '525';
+        container.style.zIndex = '2147483647';
 
         document.body.appendChild(input);
         input.focus();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         划词翻译 translate
 // @namespace    https://greasyfork.org/zh-CN/users/372485
-// @version      0.0.2
+// @version      0.0.3
 // @description  划词翻译
 // @author       Chegde
 // @match        http://*/*
@@ -17,9 +17,12 @@
     2018-9-28 不存在英文单词则不出现翻译按钮
     2018-9-29 过滤标点符号 只匹配字母
     2019-4-17 快捷键控制 翻译 - 翻译文本左上角 按键为alt+c
+    2019-4-24 快捷键控制 出现输入框 回车进行查询 出现按键为alt+w
 
     to do:
-    2. 中文翻译成英文 由快捷键进行开关
+    * 重构计划
+    * 将查询过的单词进行记录
+    * 中文翻译成英文 由快捷键进行开关
 */
 (function () {
     'use strict';
@@ -37,7 +40,7 @@
         '';
     icon.innerHTML = '译';
 
-        icon.setAttribute('style', '' +
+    icon.setAttribute('style', '' +
         'display:none!important;' +
         'background:#fff!important;' +
         'position:absolute!important;' +
@@ -93,7 +96,7 @@
             var container = server.container();
             let top = 0;//e.pageY ||
             let left = 0;//e.pageX ||
-            container.style.top =  top + 'px';
+            container.style.top = top + 'px';
             if (left + 350 <= document.body.clientWidth)// container 面板css最大宽度为250px
                 container.style.left = left + 'px';
             else
@@ -113,15 +116,70 @@
         }
     };
 
+
+    var inputBlock = function (e) {
+        server.containerDestroy();
+
+        var i = document.querySelector('#chegde-translation');
+        if (i) {
+            i.focus();
+            return;
+        }
+
+        let input = document.createElement('input');
+        input.id = 'chegde-translation'
+        let top = 0;
+        let left = 0;
+        input.style.top = top + 'px';
+        input.style.left = left + 'px';
+        input.style.position = 'fixed';
+        input.style.zIndex = '525';
+
+        // 新建翻译内容面板
+        var container = server.container();
+        container.style.top = top + 'px';
+        container.style.left = left + 'px';
+        container.style.position = 'fixed';
+        container.style.zIndex = '525';
+
+        document.body.appendChild(input);
+        input.focus();
+
+        input.addEventListener('keypress', function (e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) { // 13 is enter
+
+                document.body.removeChild(input);
+                document.body.appendChild(container);
+                server.rendered.push(container);
+
+                if (isChina(input.value)) {
+                    ajax(googleUrl + 'en&q=', encodeURIComponent(input.value), 1, container);
+                } else {
+                    if (countOfWord(input.value) == 1) {
+                        ajax(youdaoUrl, input.value, 0, container);
+                    } else {
+                        ajax(googleUrl + 'zh-CN&q=', encodeURIComponent(input.value), 1, container);
+                    }
+                }
+            }
+        });
+
+    };
+
     // 翻译图标点击事件
     icon.addEventListener('click', translateProgress);
 
-    window.addEventListener("keyup" ,function (event) {
+    window.addEventListener("keyup", function (event) {
         let key = event.key.toUpperCase();
         if (event.altKey === true && key == 'C') {
             console.log('keyup');
 
             translateProgress(event);
+        }
+
+        if (event.altKey === true && key == 'W') {
+            inputBlock();
         }
     })
 

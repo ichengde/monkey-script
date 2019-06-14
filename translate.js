@@ -166,6 +166,21 @@
 
     // 翻译图标点击事件
     icon.addEventListener('click', translateProgress);
+
+
+    window.addEventListener("keyup", function (event) {
+        let key = event.key.toUpperCase();
+        if (event.altKey === true && key == 'C') {
+            console.log('keyup');
+
+            translateProgress(event);
+        }
+
+        if (key == 'F2') {
+            inputBlock();
+        }
+    })
+
     function countOfWord(str) {
         var value = String(str);
 

@@ -17,7 +17,7 @@
     2018-9-28 不存在英文单词则不出现翻译按钮
     2018-9-29 过滤标点符号 只匹配字母
     2019-4-17 快捷键控制 翻译 - 翻译文本左上角 按键为alt+c
-
+    2019-6-14 变更快捷键 为 f2
     to do:
     2. 中文翻译成英文 由快捷键进行开关
 */
@@ -166,20 +166,6 @@
 
     // 翻译图标点击事件
     icon.addEventListener('click', translateProgress);
-
-    window.addEventListener("keyup", function (event) {
-        let key = event.key.toUpperCase();
-        if (event.altKey === true && key == 'C') {
-            console.log('keyup');
-
-            translateProgress(event);
-        }
-
-        if (event.altKey === true && key == 'W') {
-            inputBlock();
-        }
-    })
-
     function countOfWord(str) {
         var value = String(str);
 
